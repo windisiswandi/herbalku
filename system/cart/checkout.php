@@ -88,9 +88,9 @@ if ($cek_invoice_data) {
             $etd_ongkir = $data_cost_jne_arr[$id_kurir]['cost']['0']['etd'];
             $harga_ongkir =  $data_cost_jne_arr[$id_kurir]['cost']['0']['value'] * $jumlah;
         }
-        $insert_checkout = $server->query("INSERT INTO `invoice`(`id_iklan`, `id_user`, `jumlah`, `warna_i`, `ukuran_i`, `harga_i`, `diskon_i`, `kurir`, `id_kurir`, `layanan_kurir`, `etd`, `harga_ongkir`, `provinsi`, `kota`, `alamat_lengkap`, `waktu`, `tipe_progress`) VALUES ('$id_iklan', '$iduser', '$jumlah', '$warna_k', '$ukuran_k', '$harga_k', '$diskon_k', '$kurir_ongkir', '$id_kurir', '$kurir_layanan_ongkir', '$etd_ongkir', '$harga_ongkir', '$prov_inv', '$kota_inv', '$alengkap_inv', '$time', '$tipe_progress')");
+        $insert_checkout = $server->query("INSERT INTO `invoice`(`id_iklan`, `id_user`, `jumlah`, `warna_i`, `ukuran_i`, `harga_i`, `diskon_i`, `kurir`, `id_kurir`, `layanan_kurir`, `etd`, `harga_ongkir`, `provinsi`, `kota`, `alamat_lengkap`, `waktu`, `tipe_progress`) VALUES ($id_iklan, $iduser, $jumlah, '$warna_k', '$ukuran_k', $harga_k, '$diskon_k', '$kurir_ongkir', $id_kurir, '$kurir_layanan_ongkir', '$etd_ongkir', $harga_ongkir, '$prov_inv', '$kota_inv', '$alengkap_inv', '$time', '$tipe_progress')");
     } else {
-        $insert_checkout = $server->query("INSERT INTO `invoice`(`id_iklan`, `id_user`, `jumlah`, `warna_i`, `ukuran_i`, `harga_i`, `diskon_i`, `kurir`, `id_kurir`, `waktu`, `tipe_progress`) VALUES ('$id_iklan', '$iduser', '$jumlah', '$warna_k', '$ukuran_k', '$harga_k', '$diskon_k', '$kurir', '$id_kurir', '$time', '$tipe_progress')");
+        $insert_checkout = $server->query("INSERT INTO `invoice`(`id_iklan`, `id_user`, `jumlah`, `warna_i`, `ukuran_i`, `harga_i`, `diskon_i`, `kurir`, `id_kurir`, `waktu`, `tipe_progress`) VALUES ('$id_iklan', '$iduser', $jumlah, '$warna_k', '$ukuran_k', $harga_k, $diskon_k, '$kurir', $id_kurir, '$time', '$tipe_progress')");
     }
     $delete_cart_ck = $server->query("DELETE FROM `keranjang` WHERE `id_iklan`='$idproduk' AND `id_user`='$iduser'");
     if ($insert_checkout || $delete_cart_ck) {
