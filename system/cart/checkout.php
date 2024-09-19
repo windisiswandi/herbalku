@@ -1,19 +1,19 @@
 <?php
 include '../../config.php';
 
-$idproduk = $_POST['id_product'];
+// $iduser = $_POST['id_user'];
 
 // SELECT CART
-$select_cart = $server->query("SELECT * FROM `keranjang` WHERE `id_iklan`='$idproduk' AND `id_user`='$iduser'");
+$select_cart = $server->query("SELECT * FROM `keranjang`, `iklan` where keranjang.id_user=$iduser and keranjang.id_iklan=iklan.id");
 $cart_data = mysqli_fetch_assoc($select_cart);
 
 // SELECT PRODUK
-$select_iklan = $server->query("SELECT * FROM `iklan` WHERE `id`='$idproduk'");
-$iklan_data = mysqli_fetch_assoc($select_iklan);
+// $select_iklan = $server->query("SELECT * FROM `iklan` WHERE `id`='$idproduk'");
+// $iklan_data = mysqli_fetch_assoc($select_iklan);
 
 // SELECT LOKASI USER
-$lokasi_user = $server->query("SELECT * FROM `lokasi_user` WHERE `id_user`='$iduser'");
-$lokasi_user_data = mysqli_fetch_assoc($lokasi_user);
+// $lokasi_user = $server->query("SELECT * FROM `lokasi_user` WHERE `id_user`='$iduser'");
+// $lokasi_user_data = mysqli_fetch_assoc($lokasi_user);
 
 if ($_POST['tipe_checkout'] == 'keranjang') {
     $id_iklan = $cart_data['id_iklan'];

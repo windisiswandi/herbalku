@@ -37,7 +37,7 @@ $page = 'KERANJANG';
                         $hitung_diskon_fs = ($cart_data['diskon_k'] / 100) * $cart_data['harga_k'];
                         $harga_diskon_fs = ($cart_data['harga_k'] - $hitung_diskon_fs) * $cart_data['jumlah'];
                         $exp_gambar_cd = explode(',', $cart_data['gambar']);
-                ?>
+                    ?>
                         <div class="isi_cart" id="isi_cart<?php echo $cart_data['id']; ?>">
                             <div class="box_gambar_judul">
                                 <img src="../assets/image/product/<?php echo $exp_gambar_cd[0]; ?>" alt="">
@@ -52,7 +52,7 @@ $page = 'KERANJANG';
                                     <p>Total Harga</p>
                                     <h1><span>Rp</span> <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></h1>
                                 </div>
-                                <div class="bayar" id="button_checkout<?php echo $cart_data['id']; ?>" onclick="checkout('<?php echo $cart_data['id']; ?>', 'idkontol')">Checkout</div>
+                                <!-- <div class="bayar" id="button_checkout<?php echo $cart_data['id']; ?>" onclick="checkout('<?php echo $cart_data['id']; ?>', 'idkontol')">Checkout</div> -->
                                 <div class="bayar loading_checkout" id="loading_checkout<?php echo $cart_data['id']; ?>"><img src="../assets/icons/loading-w.svg" alt=""></div>
                                 <div class="box_remove_cart" onclick="removecart(<?php echo $cart_data['id']; ?>)">
                                     <i class="ri-delete-bin-line" id="icon_remove_cart<?php echo $cart_data['id']; ?>"></i>
@@ -60,10 +60,11 @@ $page = 'KERANJANG';
                                 </div>
                             </div>
                         </div>
-                    <?php
-                    }
-                } else {
-                    ?>
+                    <?php } ?>
+                    <div class="box-checkout">
+                        <div class="bayar" id="button_checkout<?= $iduser; ?>" onclick="checkout('<?= $iduser; ?>')">Checkout</div>
+                    </div>
+                <?php } else { ?>
                     <div class="box_cart_0">
                         <img src="../assets/icons/shopping-cart.svg" class="cart_0">
                         <p class="p_cart_0">Belum Ada Produk Di Keranjang</p>

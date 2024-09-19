@@ -9,14 +9,40 @@ if ($product_data) {
     $hitung_diskon_fs = ($product_data['diskon'] / 100) * $product_data['harga'];
     $harga_diskon_fs = $product_data['harga'] - $hitung_diskon_fs;
 
-    $select_rating_vp = $server->query("SELECT * FROM `akun`, `invoice`, `rating` WHERE invoice.id_iklan='$idproduct' AND rating.id_invoice_rat=invoice.idinvoice AND invoice.id_user=akun.id ORDER BY `rating`.`idrating` DESC ");
-    $jumlah_rating_vp = mysqli_num_rows($select_rating_vp);
+    $select_rating_vp = $server->query("SELECT * FROM `iklan`, `rating` WHERE iklan.id='$idproduct' AND rating.id_iklan=iklan.id ORDER BY `rating`.`idrating` DESC ");
+    
+    if ($select_rating_vp) {
+        $jumlah_rating_vp = mysqli_num_rows($select_rating_vp);
+    } else {
+        // Tangani error query
+        echo "Error: " . $server->error;
+        $jumlah_rating_vp = 0; // Atau bisa ditetapkan sesuai kebutuhan
+    }
 
-    $rata_rating_vp = $server->query("SELECT AVG(star_rat) AS rata_rat FROM rating, invoice WHERE invoice.id_iklan='$idproduct' AND rating.id_invoice_rat=invoice.idinvoice ");
-    $data_rata_rating_vp = mysqli_fetch_assoc($rata_rating_vp);
-    $hasil_rata_rat = substr($data_rata_rating_vp['rata_rat'], 0, 3);
-    $for_star_loop = substr($data_rata_rating_vp['rata_rat'], 0, 1);
-    $after_dot_rat = substr($data_rata_rating_vp['rata_rat'], 2, 1);
+    $rata_rating_vp = $server->query("SELECT AVG(star_rat) AS rata_rat FROM rating, iklan WHERE rating.id_iklan='$idproduct' AND rating.id_iklan=iklan.id");
+    
+    if ($rata_rating_vp) {
+        $data_rata_rating_vp = mysqli_fetch_assoc($rata_rating_vp);
+        
+        // Memastikan data tidak null
+        if ($data_rata_rating_vp && isset($data_rata_rating_vp['rata_rat'])) {
+            // Jika rata-rata rating ada
+            $hasil_rata_rat = substr($data_rata_rating_vp['rata_rat'], 0, 3);
+            $for_star_loop = substr($data_rata_rating_vp['rata_rat'], 0, 1);
+            $after_dot_rat = substr($data_rata_rating_vp['rata_rat'], 2, 1);
+        } else {
+            // Jika tidak ada rating, berikan nilai default
+            $hasil_rata_rat = '0.00';
+            $for_star_loop = '0';
+            $after_dot_rat = '0';
+        }
+    } else {
+        // Tangani error query rata-rata
+        echo "Error: " . $server->error;
+        $hasil_rata_rat = '0.00';
+        $for_star_loop = '0';
+        $after_dot_rat = '0';
+    }
 } else {
     header("location: " . $url);
 }

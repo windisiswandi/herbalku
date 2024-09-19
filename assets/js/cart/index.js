@@ -1,9 +1,9 @@
-function checkout(id_product_cko) {
-    var btn_cko = 'button_checkout' + id_product_cko;
-    var load_cko = 'loading_checkout' + id_product_cko;
+function checkout(id_user) {
+    var btn_cko = 'button_checkout' + id_user;
+    var load_cko = 'loading_checkout' + id_user;
 
     var data_checkout_cart = new FormData();
-    data_checkout_cart.append('id_product', id_product_cko);
+    data_checkout_cart.append('id_user', id_user);
     data_checkout_cart.append('tipe_checkout', 'keranjang');
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

@@ -21,10 +21,8 @@
 
 .box_isi_cart {
     width: 100%;
-    margin-top: 15px;
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 5px;
 }
 
 .isi_cart {
@@ -49,6 +47,16 @@
     object-fit: cover;
     border-radius: 3px;
     float: left;
+}
+
+.box-checkout {
+    width: 100%;
+    padding: 20px 30px;
+    background-color: var(--white);
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    justify-content: end;
 }
 
 .box_judul_ic {
@@ -116,7 +124,6 @@
     height: 45px;
     font-weight: 500;
     font-size: 16px;
-    margin-left: 20px;
     width: 120px;
     display: flex;
     justify-content: center;
