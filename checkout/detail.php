@@ -4,22 +4,28 @@ include '../system/location/provinsi.php';
 require_once '../assets/composer/midtrans-php-master/Midtrans.php';
 
 $id_invoice = $_GET['idinvoice'];
-$invoice = $server->query("SELECT * FROM `invoice`, `iklan`, `kategori` WHERE invoice.idinvoice='$id_invoice' AND invoice.id_user='$iduser' AND invoice.id_iklan=iklan.id AND iklan.id_kategori=kategori.id");
+$invoice = $server->query("SELECT * FROM `invoice` WHERE invoice.idinvoice=$id_invoice");
 $invoice_data = mysqli_fetch_assoc($invoice);
-$berat_barang = $invoice_data['berat'];
-$exp_gambar_id = explode(',', $invoice_data['gambar']);
-
-// HARGA
-$hitung_diskon_fs = ($invoice_data['diskon_i'] / 100) * $invoice_data['harga_i'];
-$harga_diskon_fs = ($invoice_data['harga_i'] - $hitung_diskon_fs) * $invoice_data['jumlah'];
-$harga_satuan = $harga_diskon_fs / $invoice_data['jumlah'];
-
-if (!$invoice_data) {
-    header("Location: " . $url);
+$items = $server->query("SELECT * FROM `invoice_item`,`iklan`,`kategori` WHERE invoice_item.idinvoice=$id_invoice and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+$invoice_items = []; 
+while ($row = mysqli_fetch_assoc($items)) {
+    $invoice_items[] = $row;
 }
 
+// var_dump($invoice_items); die;
+
+$berat_barang = 0;
+// $exp_gambar_id = explode(',', $invoice_data['gambar']);
+
+// HARGA
+// $hitung_diskon_fs = ($invoice_data['diskon_i'] / 100) * $invoice_data['harga_i'];
+// $harga_diskon_fs = ($invoice_data['harga_i'] - $hitung_diskon_fs) * $invoice_data['jumlah'];
+// $harga_satuan = $harga_diskon_fs / $invoice_data['jumlah'];
+
+
+
 // RAJA ONGKIR COST
-if (!$invoice_data['kota'] == '') {
+if ($invoice_data['kota']) {
     $prov_exp_li = explode(',', $invoice_data['provinsi']);
     $kota_exp_li = explode(',', $invoice_data['kota']);
     $kota_tujuan  = $kota_exp_li[0];
@@ -31,34 +37,34 @@ if (!$invoice_data['kota'] == '') {
     $harga_ongkir = 0;
 }
 
-$total_biaya = $harga_diskon_fs + $harga_ongkir;
 $uniqcode = (int) str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
+$total_biaya = $invoice_data['total_harga'] + $harga_ongkir + $uniqcode;
 
 // MIDTRANS
 // Set your Merchant Server Key
-\Midtrans\Config::$serverKey = $midtrans_server_key;
+// \Midtrans\Config::$serverKey = $midtrans_server_key;
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-\Midtrans\Config::$isProduction = false;
+// \Midtrans\Config::$isProduction = false;
 // Set sanitization on (default)
-\Midtrans\Config::$isSanitized = true;
+// \Midtrans\Config::$isSanitized = true;
 // Set 3DS transaction for credit card to true
-\Midtrans\Config::$is3ds = true;
+// \Midtrans\Config::$is3ds = true;
 
-$order_id_midtrans = $id_invoice . '-midtrans-' . time();
+// $order_id_midtrans = $id_invoice . '-midtrans-' . time();
 
-$params = array(
-    'transaction_details' => array(
-        'order_id' => $order_id_midtrans,
-        'gross_amount' => $total_biaya,
-    ),
-    'customer_details' => array(
-        'first_name' => $profile['nama_lengkap'],
-        // 'last_name' => 'pratama',
-        'email' => $profile['email'],
-        // 'phone' => '08111222333',
-    ),
-);
-$snapToken = \Midtrans\Snap::getSnapToken($params);
+// $params = array(
+//     'transaction_details' => array(
+//         'order_id' => $order_id_midtrans,
+//         'gross_amount' => $total_biaya,
+//     ),
+//     'customer_details' => array(
+//         'first_name' => $profile['nama_lengkap'],
+//         // 'last_name' => 'pratama',
+//         'email' => $profile['email'],
+//         // 'phone' => '08111222333',
+//     ),
+// );
+// $snapToken = \Midtrans\Snap::getSnapToken($params);
 
 // NOMOR REKENING
 $select_norek = $server->query("SELECT * FROM `nomor_rekening` WHERE `idnorek`='1' ");
@@ -148,7 +154,7 @@ $data_norek = mysqli_fetch_assoc($select_norek);
                 </div>
                 <div class="isi_box_transfer_manual">
                     <h4>Harga Yang Dibayarkan</h4>
-                    <h2>Rp <?php echo number_format($total_biaya+$uniqcode, 0, ".", "."); ?></h2>
+                    <h2>Rp <?php echo number_format($total_biaya, 0, ".", "."); ?></h2>
                     <span style="font-size: 11px; font-style: italic;">* <?= $uniqcode; ?> merupakan kode unik, pastikan transfer dengan nominal yang sama</span>
                 </div>
                 <div class="isi_box_transfer_manual">
@@ -198,30 +204,41 @@ $data_norek = mysqli_fetch_assoc($select_norek);
             </div>
             <div class="detail_checkout">
                 <h1>Produk Dipesan</h1>
-                <div class="box_detail_checkout">
-                    <div class="rincian_checkout">
-                        <img src="../../assets/image/product/<?php echo $exp_gambar_id[0]; ?>" alt="">
-                        <div class="judul_rincian_checkout">
-                            <h1><?php echo $invoice_data['judul']; ?></h1>
-                            <p>Kategori <span><?php echo $invoice_data['nama']; ?></span></p>
-                            <p>Total Produk <span><?php echo $invoice_data['jumlah']; ?></span></p>
+                <?php 
+                foreach($invoice_items as $item) : ?>
+                    <?php 
+                        $berat_barang += $item['berat'] * $item['qty'];
+                        $exp_gambar_id = explode(',', $item['gambar']);
+                        $hitung_diskon_fs = ($item['diskon'] / 100) * $item['harga'];
+                        $harga_diskon_fs = ($item['harga'] - $hitung_diskon_fs) * $item['qty'];
+                        $harga_satuan = $harga_diskon_fs / $item['qty'];
+                    ?>
+                    <div class="box_detail_checkout">
+                        <div class="rincian_checkout">
+                            <img src="../../assets/image/product/<?php echo $exp_gambar_id[0]; ?>" alt="">
+                            <div class="judul_rincian_checkout">
+                                <h1><?php echo $item['judul']; ?></h1>
+                                <p>Kategori <span><?php echo $item['nama']; ?></span></p>
+                                <p>Total Produk <span><?php echo $item['qty']; ?></span></p>
+                            </div>
+                        </div>
+                        <div class="box_harga_satuan_checkout">
+                            <div class="harga_satuan_checkout">
+                                <p>Harga satuan</p>
+                                <h5>Rp <?php echo number_format($harga_satuan, 0, ".", "."); ?></h5>
+                            </div>
+                            <div class="harga_satuan_checkout">
+                                <p>Jumlah</p>
+                                <h5><?php echo $item['qty']; ?></h5>
+                            </div>
+                            <div class="harga_satuan_checkout" id="subtotal_produk">
+                                <p>Subtotal Produk</p>
+                                <h5>Rp <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></h5>
+                            </div>
                         </div>
                     </div>
-                    <div class="box_harga_satuan_checkout">
-                        <div class="harga_satuan_checkout">
-                            <p>Harga Satuan</p>
-                            <h5>Rp <?php echo number_format($harga_satuan, 0, ".", "."); ?></h5>
-                        </div>
-                        <div class="harga_satuan_checkout">
-                            <p>Jumlah</p>
-                            <h5><?php echo $invoice_data['jumlah']; ?></h5>
-                        </div>
-                        <div class="harga_satuan_checkout" id="subtotal_produk">
-                            <p>Subtotal Produk</p>
-                            <h5>Rp <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></h5>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
+                
                 <?php
                 if (!$invoice_data['kota'] == '') {
                 ?>
@@ -254,17 +271,18 @@ $data_norek = mysqli_fetch_assoc($select_norek);
                 ?>
                 <div class="total_pesanan">
                     <p>Total Pesanan:</p>
-                    <?php
-                    if (!$invoice_data['kota'] == '') {
-                    ?>
-                    <h5><span>Rp</span> <?php echo number_format($total_biaya, 0, ".", "."); ?></h5>
-                    <?php
-                    } else {
-                    ?>
-                    <h5><span>Rp</span> <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></h5>
-                    <?php
-                    }
-                    ?>
+                    <?php if (!$invoice_data['kota'] == '') : ?>
+                        <h5>
+                            <span>Rp <?php echo number_format($total_biaya, 0, ".", "."); ?></span> 
+                            <span>*Sudah termasuk kode unik</span>
+                        </h5>
+            
+                    <?php else : ?>
+                        <h5>
+                            <span>Rp <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></span> 
+                            <span>*Sudah termasuk kode unik</span>
+                        </h5>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="button_bayar">
@@ -302,15 +320,14 @@ $data_norek = mysqli_fetch_assoc($select_norek);
     </div>
     <input type="hidden" id="id_invoice" value="<?php echo $id_invoice; ?>">
     <input type="hidden" id="berat_barang" value="<?php echo $berat_barang; ?>">
-    <input type="hidden" id="jumlah_barang" value="<?php echo $invoice_data['jumlah']; ?>">
     <div id="res"></div>
 
     <script type="text/javascript">
     var payButton = document.getElementById('pay-button');
     // For example trigger on button clicked, or any time you need
-    payButton.addEventListener('click', function() {
-        snap.pay('<?php echo $snapToken; ?>'); // Replace it with your transaction token
-    });
+    // payButton.addEventListener('click', function() {
+    //     snap.pay('<?php echo @$snapToken; ?>'); // Replace it with your transaction token
+    // });
     </script>
     <!-- CONTENT -->
 

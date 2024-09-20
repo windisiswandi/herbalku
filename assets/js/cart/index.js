@@ -1,9 +1,11 @@
-function checkout(id_user) {
+function checkout(id_user, total_harga, total_berat) {
     var btn_cko = 'button_checkout' + id_user;
     var load_cko = 'loading_checkout' + id_user;
 
     var data_checkout_cart = new FormData();
     data_checkout_cart.append('id_user', id_user);
+    data_checkout_cart.append('total_harga', total_harga);
+    data_checkout_cart.append('total_berat', total_berat);
     data_checkout_cart.append('tipe_checkout', 'keranjang');
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

@@ -33,9 +33,13 @@ $page = 'KERANJANG';
             <div class="box_isi_cart">
                 <?php
                 if ($cek_cart) {
+                    $total_harga = 0;
+                    $total_berat = 0;
                     while ($cart_data = mysqli_fetch_array($select_cart)) {
-                        $hitung_diskon_fs = ($cart_data['diskon_k'] / 100) * $cart_data['harga_k'];
-                        $harga_diskon_fs = ($cart_data['harga_k'] - $hitung_diskon_fs) * $cart_data['jumlah'];
+                        $hitung_diskon_fs = ($cart_data['diskon'] / 100) * $cart_data['harga'];
+                        $harga_diskon_fs = ($cart_data['harga'] - $hitung_diskon_fs) * $cart_data['jumlah'];
+                        $total_harga += $harga_diskon_fs;
+                        $total_berat += $cart_data['berat'] * $cart_data['jumlah'];
                         $exp_gambar_cd = explode(',', $cart_data['gambar']);
                     ?>
                         <div class="isi_cart" id="isi_cart<?php echo $cart_data['id']; ?>">
@@ -49,11 +53,10 @@ $page = 'KERANJANG';
                             </div>
                             <div class="box_detail_isi_cart">
                                 <div class="box_total_harga">
-                                    <p>Total Harga</p>
+                                    <p>Sub Total</p>
                                     <h1><span>Rp</span> <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></h1>
                                 </div>
-                                <!-- <div class="bayar" id="button_checkout<?php echo $cart_data['id']; ?>" onclick="checkout('<?php echo $cart_data['id']; ?>', 'idkontol')">Checkout</div> -->
-                                <div class="bayar loading_checkout" id="loading_checkout<?php echo $cart_data['id']; ?>"><img src="../assets/icons/loading-w.svg" alt=""></div>
+                                
                                 <div class="box_remove_cart" onclick="removecart(<?php echo $cart_data['id']; ?>)">
                                     <i class="ri-delete-bin-line" id="icon_remove_cart<?php echo $cart_data['id']; ?>"></i>
                                     <img src="../assets/icons/loading-o.svg" id="loading_remove_cart<?php echo $cart_data['id']; ?>">
@@ -62,7 +65,9 @@ $page = 'KERANJANG';
                         </div>
                     <?php } ?>
                     <div class="box-checkout">
-                        <div class="bayar" id="button_checkout<?= $iduser; ?>" onclick="checkout('<?= $iduser; ?>')">Checkout</div>
+                        <div class="box_total_harga"><p>Total Harga</p><h1><span>Rp</span> <?php echo number_format($total_harga, 0, ".", "."); ?></h1></div>
+                        <div class="bayar" id="button_checkout<?= $iduser; ?>" onclick="checkout('<?= $iduser; ?>', <?= $total_harga; ?>, <?= $total_berat; ?>)">Checkout</div>
+                        <div class="bayar loading_checkout" id="loading_checkout<?php echo $iduser; ?>"><img src="../assets/icons/loading-w.svg" alt=""></div>
                     </div>
                 <?php } else { ?>
                     <div class="box_cart_0">

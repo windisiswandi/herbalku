@@ -57,6 +57,7 @@
     overflow: hidden;
     display: flex;
     justify-content: end;
+    align-items: center;
 }
 
 .box_judul_ic {
@@ -92,6 +93,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+}
+
+.box-checkout .box_total_harga {
+    margin-right: 10px;
 }
 
 .box_total_harga {

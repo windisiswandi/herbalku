@@ -70,11 +70,10 @@ function ubahAlamat() {
 }
 
 function UbahOngkir(id_kota_tujuan) {
-    console.log(id_kota_tujuan);
     var data_ongkir = new FormData();
     data_ongkir.append('id_kota_tujuan_v', id_kota_tujuan);
     data_ongkir.append('berat_barang', document.getElementById('berat_barang').value);
-    data_ongkir.append('jumlah_barang', document.getElementById('jumlah_barang').value);
+    // data_ongkir.append('jumlah_barang', document.getElementById('jumlah_barang').value);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 1) {

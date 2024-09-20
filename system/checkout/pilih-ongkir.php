@@ -3,7 +3,7 @@ include '../../config.php';
 
 $kota_tujuan  = $_POST['id_kota_tujuan_v'];
 $berat_barang = $_POST['berat_barang'];
-$jumlah_barang = $_POST['jumlah_barang'];
+// $jumlah_barang = $_POST['jumlah_barang'];
 
 // JNE
 $curl_jne = curl_init();
@@ -34,7 +34,7 @@ if ($err_cost_jne) {
         $kurir_ongkir = $data_cost_jne['rajaongkir']['results']['0']['code'];
         $kurir_layanan_ongkir = $data_cost_jne_arr[$keykon]['service'];
         $etd_ongkir = $data_cost_jne_arr[$keykon]['cost']['0']['etd'];
-        $harga_ongkir =  $data_cost_jne_arr[$keykon]['cost']['0']['value'] * $jumlah_barang;
+        $harga_ongkir =  $data_cost_jne_arr[$keykon]['cost']['0']['value'];
 ?>
         <div class="box_list_ongkir" onclick="UbahOpsiOngkir('<?php echo $kurir_ongkir; ?>', '<?php echo $keykon; ?>', '<?php echo $kurir_layanan_ongkir; ?>', '<?php echo $etd_ongkir; ?>', '<?php echo $harga_ongkir; ?>')">
             <div class="judul_list_ongkir">
@@ -76,7 +76,7 @@ if ($err_cost_tiki) {
         $kurir_ongkir = $data_cost_tiki['rajaongkir']['results']['0']['code'];
         $kurir_layanan_ongkir = $data_cost_tiki_arr[$keykon]['service'];
         $etd_ongkir = $data_cost_tiki_arr[$keykon]['cost']['0']['etd'];
-        $harga_ongkir =  $data_cost_tiki_arr[$keykon]['cost']['0']['value'] * $jumlah_barang;
+        $harga_ongkir =  $data_cost_tiki_arr[$keykon]['cost']['0']['value'];
     ?>
         <div class="box_list_ongkir" onclick="UbahOpsiOngkir('<?php echo $kurir_ongkir; ?>', '<?php echo $keykon; ?>', '<?php echo $kurir_layanan_ongkir; ?>', '<?php echo $etd_ongkir; ?>', '<?php echo $harga_ongkir; ?>')">
             <div class="judul_list_ongkir">
@@ -118,7 +118,7 @@ if ($err_cost_pos) {
         $kurir_ongkir = $data_cost_pos['rajaongkir']['results']['0']['code'];
         $kurir_layanan_ongkir = $data_cost_pos_arr[$keykon]['service'];
         $etd_ongkir = $data_cost_pos_arr[$keykon]['cost']['0']['etd'];
-        $harga_ongkir =  $data_cost_pos_arr[$keykon]['cost']['0']['value'] * $jumlah_barang;
+        $harga_ongkir =  $data_cost_pos_arr[$keykon]['cost']['0']['value'];
     ?>
         <div class="box_list_ongkir" onclick="UbahOpsiOngkir('<?php echo $kurir_ongkir; ?>', '<?php echo $keykon; ?>', '<?php echo $kurir_layanan_ongkir; ?>', '<?php echo $etd_ongkir; ?>', '<?php echo $harga_ongkir; ?>')">
             <div class="judul_list_ongkir">

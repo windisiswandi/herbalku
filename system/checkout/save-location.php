@@ -8,11 +8,13 @@ $alamat_lengkap = $_POST['alamat_lengkap'];
 $id_kurir = '0';
 
 
-$select_invoice_sl = $server->query("SELECT * FROM `invoice`, `iklan` WHERE invoice.idinvoice=$id_invoice AND invoice.id_iklan=iklan.id ");
+$select_invoice_sl = $server->query("SELECT SUM(iklan.berat * invoice_item.qty) AS total_berat 
+                                    FROM invoice_item 
+                                    JOIN iklan ON invoice_item.id_iklan = iklan.id 
+                                    WHERE invoice_item.idinvoice = $id_invoice");
 $data_invoice_sl = mysqli_fetch_assoc($select_invoice_sl);
 
-$berat_barang = $data_invoice_sl['berat'];
-$jumlah_barang = $data_invoice_sl['jumlah'];
+$berat_barang = $data_invoice_sl['total_berat'];
 
 // API RAJA ONGKIR
 $curl = curl_init();
@@ -74,7 +76,7 @@ if ($err) {
         $kurir_ongkir = $data_cost_jne['rajaongkir']['results']['0']['code'];
         $kurir_layanan_ongkir = $data_cost_jne_arr[$id_kurir]['service'];
         $etd_ongkir = $data_cost_jne_arr[$id_kurir]['cost']['0']['etd'];
-        $harga_ongkir =  $data_cost_jne_arr[$id_kurir]['cost']['0']['value'] * $jumlah_barang;
+        $harga_ongkir =  $data_cost_jne_arr[$id_kurir]['cost']['0']['value'];
     }
 
     if ($data_lokasi_user) {

@@ -5,7 +5,7 @@ $page = 'NOTIFIKASI';
 
 $update_status_notification = $server->query("UPDATE `notification` SET `status_notif`='Read' WHERE `id_user`='$iduser' ");
 
-$select_notification = $server->query("SELECT * FROM `notification`, `invoice`, `iklan` WHERE notification.id_user='$iduser' AND notification.id_invoice=invoice.idinvoice AND invoice.id_iklan=iklan.id ORDER BY `notification`.`id_notif` DESC");
+$select_notification = $server->query("SELECT * FROM `notification`, `invoice`, `invoice_item`, `iklan` WHERE notification.id_user='$iduser' AND notification.id_invoice=invoice.idinvoice AND invoice.idinvoice=invoice_item.idinvoice and invoice_item.id_iklan=iklan.id ORDER BY `notification`.`id_notif` DESC");
 $jumlah_notification = mysqli_num_rows($select_notification);
 ?>
 <!DOCTYPE html>
