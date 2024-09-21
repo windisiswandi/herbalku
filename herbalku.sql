@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2024 at 04:54 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Waktu pembuatan: 21 Sep 2024 pada 11.11
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `akun`
+-- Struktur dari tabel `akun`
 --
 
 CREATE TABLE `akun` (
@@ -40,19 +40,20 @@ CREATE TABLE `akun` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `akun`
+-- Dumping data untuk tabel `akun`
 --
 
 INSERT INTO `akun` (`id`, `foto`, `nama_lengkap`, `email`, `no_whatsapp`, `password`, `waktu`, `tipe_daftar`, `tipe_akun`) VALUES
 (14, '1720684866.png', 'User Biasa', 'user@gmail.com', '085381259307', '$2y$10$uDy0.tHRpB0alUAAwL.1XOT/f3Y6O4SfIZ28rnhyyRlkEgacqimPu', '2021-06-18 16:20:48', '', ''),
 (15, '1720685153.png', 'Administrator', 'admin@gmail.com', '082377823390', '$2y$10$ivlVrsDRBVq7ZDlsBcLj7eJ2B8RlEY9cVNnNk.H0kkoQxP6b6PSBu', '2021-07-11 01:18:30', '', 'Admin'),
 (16, 'user.png', 'aldi', 'aldi@gmail.com', '087789442523', '$2y$10$kjv6T7uilTGSq95fhSdq8eUPJvHyb.cxWY5ZvTHI4etyZg9F6TjEu', '2024-09-02 14:47:57', '', ''),
-(17, 'user.png', 'maeka', 'maek@gmail.com', '123123123', '$2y$10$Ls2S2zpi0kKf1eUMv0/tN.txtvDVpjwZ6YboC7NZr/nm.IMuQMhxS', '2024-09-05 00:43:26', '', '');
+(17, 'user.png', 'maeka', 'maek@gmail.com', '123123123', '$2y$10$Ls2S2zpi0kKf1eUMv0/tN.txtvDVpjwZ6YboC7NZr/nm.IMuQMhxS', '2024-09-05 00:43:26', '', ''),
+(18, 'user.png', 'qori', 'qori@gmail.com', '123413432', '$2y$10$MGyms59lBFmCohAacYVBC.VKsz1.gCh1QMJn.rFNjxujlOf5thNiq', '2024-09-19 08:41:34', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `banner_promo`
+-- Struktur dari tabel `banner_promo`
 --
 
 CREATE TABLE `banner_promo` (
@@ -62,7 +63,7 @@ CREATE TABLE `banner_promo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `banner_promo`
+-- Dumping data untuk tabel `banner_promo`
 --
 
 INSERT INTO `banner_promo` (`idbanner`, `image`, `status`) VALUES
@@ -72,7 +73,7 @@ INSERT INTO `banner_promo` (`idbanner`, `image`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `flashsale`
+-- Struktur dari tabel `flashsale`
 --
 
 CREATE TABLE `flashsale` (
@@ -81,7 +82,7 @@ CREATE TABLE `flashsale` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `flashsale`
+-- Dumping data untuk tabel `flashsale`
 --
 
 INSERT INTO `flashsale` (`id_fs`, `waktu_berakhir`) VALUES
@@ -90,7 +91,7 @@ INSERT INTO `flashsale` (`id_fs`, `waktu_berakhir`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `iklan`
+-- Struktur dari tabel `iklan`
 --
 
 CREATE TABLE `iklan` (
@@ -112,7 +113,7 @@ CREATE TABLE `iklan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `iklan`
+-- Dumping data untuk tabel `iklan`
 --
 
 INSERT INTO `iklan` (`id`, `id_kategori`, `gambar`, `judul`, `harga`, `deskripsi`, `berat`, `warna`, `ukuran`, `stok`, `terjual`, `diskon`, `tipe_iklan`, `waktu`, `status`) VALUES
@@ -127,19 +128,14 @@ INSERT INTO `iklan` (`id`, `id_kategori`, `gambar`, `judul`, `harga`, `deskripsi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invoice`
+-- Struktur dari tabel `invoice`
 --
 
 CREATE TABLE `invoice` (
   `idinvoice` int(11) NOT NULL,
-  `id_iklan` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `jumlah` int(4) NOT NULL,
-  `warna_i` text NOT NULL,
-  `ukuran_i` text NOT NULL,
-  `harga_i` int(11) NOT NULL,
+  `total_harga` int(11) NOT NULL,
   `kode_unik` int(11) DEFAULT NULL,
-  `diskon_i` int(11) NOT NULL,
   `kurir` varchar(10) NOT NULL,
   `id_kurir` int(11) NOT NULL,
   `layanan_kurir` text DEFAULT NULL,
@@ -164,28 +160,40 @@ CREATE TABLE `invoice` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `invoice`
+-- Dumping data untuk tabel `invoice`
 --
 
-INSERT INTO `invoice` (`idinvoice`, `id_iklan`, `id_user`, `jumlah`, `warna_i`, `ukuran_i`, `harga_i`, `kode_unik`, `diskon_i`, `kurir`, `id_kurir`, `layanan_kurir`, `etd`, `harga_ongkir`, `resi`, `provinsi`, `kota`, `alamat_lengkap`, `waktu`, `tipe_progress`, `transaction`, `type`, `order_id`, `fraud`, `bank_manual`, `bukti_transfer`, `waktu_transaksi`, `waktu_dikirim`, `waktu_selesai`, `waktu_dibatalkan`) VALUES
-(99, 26, 14, 2, '', '', 87000, 0, 0, 'jne', 0, 'OKE', '2-3', 30000, '12345523245', '11,Jawa Timur', '444,Surabaya', 'Jl banyu urip', '2021-07-25 16:54:57', 'Selesai', '', '', '', '', 'BCA', '99-bukti-transfer.jpeg', '2021-07-25 16:55:10', '2021-07-25 17:04:10', '2021-07-25 17:12:37', ''),
-(100, 25, 14, 1, 'MERAH', 'S', 75000, 0, 10, 'jne', 0, 'OKE', '2-3', 15000, '12189624823', '11,Jawa Timur', '444,Surabaya', 'Jl banyu urip', '2021-07-25 17:15:06', 'Selesai', '', '', '', '', 'BCA', '100-bukti-transfer.jpeg', '2021-07-25 17:15:17', '2021-07-25 17:15:47', '2021-07-25 17:15:52', ''),
-(101, 27, 14, 2, '', '', 75000, 0, 10, 'jne', 0, 'OKE', '2-3', 30000, '12456765432', '11,Jawa Timur', '444,Surabaya', 'Jl banyu urip', '2021-07-25 22:09:36', 'Selesai', '', '', '', '', 'BCA', '101-bukti-transfer.png', '2021-07-25 22:09:46', '2021-07-25 22:11:24', '2021-07-25 22:14:15', ''),
-(102, 29, 14, 1, '', '', 415000, 0, 30, 'jne', 0, 'OKE', '2-3', 15000, '123456', '11,Jawa Timur', '444,Surabaya', 'Jl banyu urip', '2021-07-25 22:38:31', 'Selesai', '', '', '', '', 'BCA', '102-bukti-transfer.png', '2021-07-25 22:38:44', '2021-09-09 12:26:33', '2021-09-09 12:26:48', ''),
-(103, 20, 14, 1, '', '', 222000, 0, 0, 'jne', 0, 'OKE', '2-3', 90000, '123', '11,Jawa Timur', '444,Surabaya', 'Jl banyu urip', '2021-07-25 23:27:20', 'Selesai', '', '', '', '', 'BCA', '103-bukti-transfer.png', '2021-07-25 23:27:32', '2021-09-09 12:26:21', '2021-09-09 12:26:44', ''),
-(105, 21, 14, 1, '', '', 15000000, 0, 0, 'jne', 0, '', '', 0, '', '', '', '', '2021-09-09 12:44:57', 'Belum Bayar', '', '', '', '', '', '', '', '', '', ''),
-(106, 31, 14, 1, '', '', 35000, 0, 0, 'pos', 0, 'Pos Reguler', '2 HARI', 7000, '3224242', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'sikur', '2024-07-11 09:45:34', 'Dikirim', '', '', '', '', 'BCA', '106-bukti-transfer.png', '2024-07-11 10:01:56', '2024-07-11 10:02:31', '', ''),
-(107, 32, 14, 1, 'MERAH', 'M', 250000, 0, 0, 'pos', 0, 'Pos Reguler', '2 HARI', 7000, '98247923', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Lombok', '2024-07-11 09:52:30', 'Selesai', '', '', '', '', 'BCA', '107-bukti-transfer.jpg', '2024-07-11 09:53:21', '2024-07-11 09:54:13', '2024-07-11 09:54:20', ''),
-(108, 45, 14, 1, '', '', 20000, 0, 0, 'jne', 0, 'CTC', '1-2', 7000, '676t57567', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'k', '2024-07-11 14:58:44', 'Selesai', '', '', '', '', 'BCA', '108-bukti-transfer.png', '2024-07-11 14:59:12', '2024-07-11 15:00:08', '2024-07-11 15:00:28', ''),
-(109, 44, 14, 4, 'g', '', 20000, 0, 0, 'jne', 0, 'CTC', '1-2', 28000, '', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'k', '2024-07-11 15:17:41', 'Belum Bayar', '', '', '', '', 'BCA', '109-bukti-transfer.png', '2024-07-11 19:48:45', '', '', ''),
-(110, 49, 14, 5, '', '', 56000, 0, 0, 'tiki', 0, 'REG', '3', 25000, '7867576', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'k', '2024-07-11 19:34:51', 'Selesai', '', '', '', '', 'BCA', '110-bukti-transfer.png', '2024-07-11 19:35:26', '2024-07-11 19:36:47', '2024-07-11 19:36:56', ''),
-(111, 48, 16, 3, '', '', 94500, 0, 0, 'jne', 1, 'OKE', '4-7', 165000, '', '2,Bangka Belitung', '28,Bangka Barat', 'et', '2024-09-02 14:49:16', 'Dikemas', '', '', '', '', 'BCA', '111-bukti-transfer.png', '2024-09-02 14:51:19', '', '', ''),
-(112, 45, 16, 1, '', '', 20000, 777, 0, 'tiki', 1, 'ECO', '4', 13000, '', '22,Nusa Tenggara Barat (NTB)', '241,Lombok Utara', 'dhdhgf', '2024-09-02 15:46:43', 'Belum Bayar', '', '', '', '', 'BCA', '112-bukti-transfer.png', '2024-09-05 03:54:55', '', '', '');
+INSERT INTO `invoice` (`idinvoice`, `id_user`, `total_harga`, `kode_unik`, `kurir`, `id_kurir`, `layanan_kurir`, `etd`, `harga_ongkir`, `resi`, `provinsi`, `kota`, `alamat_lengkap`, `waktu`, `tipe_progress`, `transaction`, `type`, `order_id`, `fraud`, `bank_manual`, `bukti_transfer`, `waktu_transaksi`, `waktu_dikirim`, `waktu_selesai`, `waktu_dibatalkan`) VALUES
+(118, 18, 150500, 142, 'tiki', 0, 'REG', '3', 5000, NULL, '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Geres', '2024-09-20 04:11:51', 'Belum Bayar', NULL, NULL, NULL, NULL, 'BCA', '118-bukti-transfer.png', '2024-09-20 05:44:19', NULL, NULL, NULL),
+(119, 18, 534000, NULL, 'jne', 0, 'CTC', '2-3', 7000, NULL, '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Geres', '2024-09-20 05:03:12', 'Belum Bayar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori`
+-- Struktur dari tabel `invoice_item`
+--
+
+CREATE TABLE `invoice_item` (
+  `id_item` int(11) NOT NULL,
+  `idinvoice` int(11) NOT NULL,
+  `id_iklan` int(11) NOT NULL,
+  `qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `invoice_item`
+--
+
+INSERT INTO `invoice_item` (`id_item`, `idinvoice`, `id_iklan`, `qty`) VALUES
+(10, 118, 49, 1),
+(11, 118, 48, 1),
+(12, 119, 47, 2),
+(13, 119, 45, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -195,7 +203,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `kategori`
+-- Dumping data untuk tabel `kategori`
 --
 
 INSERT INTO `kategori` (`id`, `nama`, `icon`) VALUES
@@ -210,7 +218,7 @@ INSERT INTO `kategori` (`id`, `nama`, `icon`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `keranjang`
+-- Struktur dari tabel `keranjang`
 --
 
 CREATE TABLE `keranjang` (
@@ -228,7 +236,7 @@ CREATE TABLE `keranjang` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lokasi_user`
+-- Struktur dari tabel `lokasi_user`
 --
 
 CREATE TABLE `lokasi_user` (
@@ -244,18 +252,19 @@ CREATE TABLE `lokasi_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `lokasi_user`
+-- Dumping data untuk tabel `lokasi_user`
 --
 
 INSERT INTO `lokasi_user` (`idlokasi`, `id_user`, `provinsi`, `id_provinsi`, `kota`, `id_kota`, `kecamatan`, `kelurahan`, `alamat_lengkap`) VALUES
 (9, 3, 'Jawa Timur', 11, 'Surabaya', 444, '', '', 'Jl banyu urip'),
 (10, 14, 'Nusa Tenggara Barat (NTB)', 22, 'Lombok Timur', 240, '', '', 'k'),
-(11, 16, 'Nusa Tenggara Barat (NTB)', 22, 'Lombok Utara', 241, '', '', 'dhdhgf');
+(11, 16, 'Nusa Tenggara Barat (NTB)', 22, 'Lombok Utara', 241, '', '', 'dhdhgf'),
+(12, 18, 'Nusa Tenggara Barat (NTB)', 22, 'Lombok Timur', 240, '', '', 'Geres');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nomor_rekening`
+-- Struktur dari tabel `nomor_rekening`
 --
 
 CREATE TABLE `nomor_rekening` (
@@ -266,7 +275,7 @@ CREATE TABLE `nomor_rekening` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `nomor_rekening`
+-- Dumping data untuk tabel `nomor_rekening`
 --
 
 INSERT INTO `nomor_rekening` (`idnorek`, `nama_bank`, `norek`, `an`) VALUES
@@ -276,7 +285,7 @@ INSERT INTO `nomor_rekening` (`idnorek`, `nama_bank`, `norek`, `an`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notification`
+-- Struktur dari tabel `notification`
 --
 
 CREATE TABLE `notification` (
@@ -290,7 +299,7 @@ CREATE TABLE `notification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `notification`
+-- Dumping data untuk tabel `notification`
 --
 
 INSERT INTO `notification` (`id_notif`, `id_user`, `id_invoice`, `nama_notif`, `deskripsi_notif`, `waktu_notif`, `status_notif`) VALUES
@@ -411,39 +420,21 @@ INSERT INTO `notification` (`id_notif`, `id_user`, `id_invoice`, `nama_notif`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating`
+-- Struktur dari tabel `rating`
 --
 
 CREATE TABLE `rating` (
   `idrating` int(11) NOT NULL,
-  `id_invoice_rat` int(11) NOT NULL,
+  `id_iklan` int(11) NOT NULL,
   `star_rat` int(1) NOT NULL,
   `deskripsi_rat` text NOT NULL,
   `waktu_rat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `rating`
---
-
-INSERT INTO `rating` (`idrating`, `id_invoice_rat`, `star_rat`, `deskripsi_rat`, `waktu_rat`) VALUES
-(7, 35, 5, 'Barang nya bagus sekali', '2021-06-18 14:51:53'),
-(8, 35, 5, '', '2021-06-18 14:51:53'),
-(9, 35, 5, '', '2021-06-18 14:51:53'),
-(10, 35, 3, '', '2021-06-18 14:51:53'),
-(11, 103, 5, 'kerennn dan berkualitas', ''),
-(12, 102, 4, 'kerennn dan berkualitas', ''),
-(13, 101, 5, 'kerennn dan berkualitas', ''),
-(14, 100, 5, 'kerennn dan berkualitas', ''),
-(15, 99, 2, 'kegedean', ''),
-(16, 107, 5, 'jk', ''),
-(17, 108, 5, 'terbaik', ''),
-(18, 110, 5, 'thx', '');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_apikey`
+-- Struktur dari tabel `setting_apikey`
 --
 
 CREATE TABLE `setting_apikey` (
@@ -456,7 +447,7 @@ CREATE TABLE `setting_apikey` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_apikey`
+-- Dumping data untuk tabel `setting_apikey`
 --
 
 INSERT INTO `setting_apikey` (`id_apikey`, `google_client_id`, `google_client_secret`, `midtrans_client_key`, `midtrans_server_key`, `rajaongkir_key`) VALUES
@@ -465,7 +456,7 @@ INSERT INTO `setting_apikey` (`id_apikey`, `google_client_id`, `google_client_se
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_email`
+-- Struktur dari tabel `setting_email`
 --
 
 CREATE TABLE `setting_email` (
@@ -479,7 +470,7 @@ CREATE TABLE `setting_email` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_email`
+-- Dumping data untuk tabel `setting_email`
 --
 
 INSERT INTO `setting_email` (`id`, `email_notif`, `host_smtp`, `port_smtp`, `username_smtp`, `password_smtp`, `setfrom_smtp`) VALUES
@@ -488,7 +479,7 @@ INSERT INTO `setting_email` (`id`, `email_notif`, `host_smtp`, `port_smtp`, `use
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_footer`
+-- Struktur dari tabel `setting_footer`
 --
 
 CREATE TABLE `setting_footer` (
@@ -500,7 +491,7 @@ CREATE TABLE `setting_footer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_footer`
+-- Dumping data untuk tabel `setting_footer`
 --
 
 INSERT INTO `setting_footer` (`id_fo`, `name_social`, `icon_social`, `link_social`, `status_social`) VALUES
@@ -514,7 +505,7 @@ INSERT INTO `setting_footer` (`id_fo`, `name_social`, `icon_social`, `link_socia
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_header`
+-- Struktur dari tabel `setting_header`
 --
 
 CREATE TABLE `setting_header` (
@@ -525,7 +516,7 @@ CREATE TABLE `setting_header` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_header`
+-- Dumping data untuk tabel `setting_header`
 --
 
 INSERT INTO `setting_header` (`id_hs`, `logo`, `title_name`, `placeholder_search`) VALUES
@@ -534,7 +525,7 @@ INSERT INTO `setting_header` (`id_hs`, `logo`, `title_name`, `placeholder_search
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_lokasi`
+-- Struktur dari tabel `setting_lokasi`
 --
 
 CREATE TABLE `setting_lokasi` (
@@ -546,7 +537,7 @@ CREATE TABLE `setting_lokasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_lokasi`
+-- Dumping data untuk tabel `setting_lokasi`
 --
 
 INSERT INTO `setting_lokasi` (`id`, `provinsi`, `kota`, `provinsi_id`, `kota_id`) VALUES
@@ -555,7 +546,7 @@ INSERT INTO `setting_lokasi` (`id`, `provinsi`, `kota`, `provinsi_id`, `kota_id`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting_pembayaran`
+-- Struktur dari tabel `setting_pembayaran`
 --
 
 CREATE TABLE `setting_pembayaran` (
@@ -565,7 +556,7 @@ CREATE TABLE `setting_pembayaran` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting_pembayaran`
+-- Dumping data untuk tabel `setting_pembayaran`
 --
 
 INSERT INTO `setting_pembayaran` (`id`, `tipe`, `status`) VALUES
@@ -577,209 +568,221 @@ INSERT INTO `setting_pembayaran` (`id`, `tipe`, `status`) VALUES
 --
 
 --
--- Indexes for table `akun`
+-- Indeks untuk tabel `akun`
 --
 ALTER TABLE `akun`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `banner_promo`
+-- Indeks untuk tabel `banner_promo`
 --
 ALTER TABLE `banner_promo`
   ADD PRIMARY KEY (`idbanner`);
 
 --
--- Indexes for table `flashsale`
+-- Indeks untuk tabel `flashsale`
 --
 ALTER TABLE `flashsale`
   ADD PRIMARY KEY (`id_fs`);
 
 --
--- Indexes for table `iklan`
+-- Indeks untuk tabel `iklan`
 --
 ALTER TABLE `iklan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `invoice`
+-- Indeks untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
   ADD PRIMARY KEY (`idinvoice`);
 
 --
--- Indexes for table `kategori`
+-- Indeks untuk tabel `invoice_item`
+--
+ALTER TABLE `invoice_item`
+  ADD PRIMARY KEY (`id_item`);
+
+--
+-- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `keranjang`
+-- Indeks untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `lokasi_user`
+-- Indeks untuk tabel `lokasi_user`
 --
 ALTER TABLE `lokasi_user`
   ADD PRIMARY KEY (`idlokasi`);
 
 --
--- Indexes for table `nomor_rekening`
+-- Indeks untuk tabel `nomor_rekening`
 --
 ALTER TABLE `nomor_rekening`
   ADD PRIMARY KEY (`idnorek`);
 
 --
--- Indexes for table `notification`
+-- Indeks untuk tabel `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`id_notif`);
 
 --
--- Indexes for table `rating`
+-- Indeks untuk tabel `rating`
 --
 ALTER TABLE `rating`
   ADD PRIMARY KEY (`idrating`);
 
 --
--- Indexes for table `setting_apikey`
+-- Indeks untuk tabel `setting_apikey`
 --
 ALTER TABLE `setting_apikey`
   ADD PRIMARY KEY (`id_apikey`);
 
 --
--- Indexes for table `setting_email`
+-- Indeks untuk tabel `setting_email`
 --
 ALTER TABLE `setting_email`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `setting_footer`
+-- Indeks untuk tabel `setting_footer`
 --
 ALTER TABLE `setting_footer`
   ADD PRIMARY KEY (`id_fo`);
 
 --
--- Indexes for table `setting_header`
+-- Indeks untuk tabel `setting_header`
 --
 ALTER TABLE `setting_header`
   ADD PRIMARY KEY (`id_hs`);
 
 --
--- Indexes for table `setting_lokasi`
+-- Indeks untuk tabel `setting_lokasi`
 --
 ALTER TABLE `setting_lokasi`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `setting_pembayaran`
+-- Indeks untuk tabel `setting_pembayaran`
 --
 ALTER TABLE `setting_pembayaran`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `akun`
+-- AUTO_INCREMENT untuk tabel `akun`
 --
 ALTER TABLE `akun`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `banner_promo`
+-- AUTO_INCREMENT untuk tabel `banner_promo`
 --
 ALTER TABLE `banner_promo`
   MODIFY `idbanner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT for table `flashsale`
+-- AUTO_INCREMENT untuk tabel `flashsale`
 --
 ALTER TABLE `flashsale`
   MODIFY `id_fs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `iklan`
+-- AUTO_INCREMENT untuk tabel `iklan`
 --
 ALTER TABLE `iklan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
--- AUTO_INCREMENT for table `invoice`
+-- AUTO_INCREMENT untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `idinvoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `idinvoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
--- AUTO_INCREMENT for table `kategori`
+-- AUTO_INCREMENT untuk tabel `invoice_item`
+--
+ALTER TABLE `invoice_item`
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `keranjang`
+-- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT for table `lokasi_user`
+-- AUTO_INCREMENT untuk tabel `lokasi_user`
 --
 ALTER TABLE `lokasi_user`
-  MODIFY `idlokasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idlokasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `nomor_rekening`
+-- AUTO_INCREMENT untuk tabel `nomor_rekening`
 --
 ALTER TABLE `nomor_rekening`
   MODIFY `idnorek` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `notification`
+-- AUTO_INCREMENT untuk tabel `notification`
 --
 ALTER TABLE `notification`
   MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
--- AUTO_INCREMENT for table `rating`
+-- AUTO_INCREMENT untuk tabel `rating`
 --
 ALTER TABLE `rating`
   MODIFY `idrating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `setting_apikey`
+-- AUTO_INCREMENT untuk tabel `setting_apikey`
 --
 ALTER TABLE `setting_apikey`
   MODIFY `id_apikey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `setting_email`
+-- AUTO_INCREMENT untuk tabel `setting_email`
 --
 ALTER TABLE `setting_email`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `setting_footer`
+-- AUTO_INCREMENT untuk tabel `setting_footer`
 --
 ALTER TABLE `setting_footer`
   MODIFY `id_fo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `setting_header`
+-- AUTO_INCREMENT untuk tabel `setting_header`
 --
 ALTER TABLE `setting_header`
   MODIFY `id_hs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `setting_lokasi`
+-- AUTO_INCREMENT untuk tabel `setting_lokasi`
 --
 ALTER TABLE `setting_lokasi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `setting_pembayaran`
+-- AUTO_INCREMENT untuk tabel `setting_pembayaran`
 --
 ALTER TABLE `setting_pembayaran`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
