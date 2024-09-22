@@ -1,7 +1,7 @@
 <?php
 include '../../../config.php';
 
-$select_invoice = $server->query("SELECT * FROM `iklan`, `kategori`, `akun`, `invoice` WHERE  invoice.tipe_progress='Dibatalkan' AND invoice.id_iklan=iklan.id AND iklan.id_kategori=kategori.id AND invoice.id_user=akun.id ORDER BY `invoice`.`idinvoice` DESC");
+$select_invoice = $server->query("SELECT * FROM `akun`, `invoice` WHERE invoice.tipe_progress='Dibatalkan' AND invoice.id_user=akun.id ORDER BY `invoice`.`idinvoice` DESC");
 $cek_invoice = mysqli_num_rows($select_invoice);
 if ($cek_invoice == "0") {
 ?>
@@ -19,18 +19,19 @@ if ($cek_invoice == "0") {
     <div class="box_isi_res_order">
         <?php
         while ($invoice_data = mysqli_fetch_assoc($select_invoice)) {
-            $hitung_diskon_fs = ($invoice_data['diskon_i'] / 100) * $invoice_data['harga_i'];
-            $harga_diskon_fs = ($invoice_data['harga_i'] - $hitung_diskon_fs) * $invoice_data['jumlah'];
-            $harga_semua_fs = $harga_diskon_fs + $invoice_data['harga_ongkir'];
-            $exp_gambar_od = explode(',', $invoice_data['gambar']);
+            $invoice_item = $server->query("SELECT *, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+            $item = mysqli_fetch_assoc($invoice_item);
+            $exp_gambar_od = explode(',', $item['gambar']);
+            $exp_prov_od = explode(',', $invoice_data['provinsi']);
+            $exp_kota_od = explode(',', $invoice_data['kota']);
         ?>
-            <div class="isi_cart" id="isi_cart<?php echo $invoice_data['id']; ?>">
+            <div class="isi_cart" id="isi_cart<?php echo $invoice_data['idinvoice']; ?>">
                 <div class="box_gambar_judul">
                     <img src="<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>" alt="">
                     <div class="box_judul_ic">
-                        <h1><?php echo $invoice_data['judul']; ?></h1>
-                        <p>Kategori <span><?php echo $invoice_data['nama']; ?></span></p>
-                        <p>Total Produk <span><?php echo $invoice_data['jumlah']; ?></span></p>
+                        <h1><?php echo $item['judul']; ?></h1>
+                        <p>Kategori <span><?php echo $item['nama']; ?></span></p>
+                        <p>Total Produk <span><?php echo $item['total_produk']; ?></span></p>
                     </div>
                 </div>
                 <div class="box_detail_isi_cart">
@@ -40,7 +41,7 @@ if ($cek_invoice == "0") {
                             <img src="<?php echo $url; ?>assets/image/profile/<?php echo $invoice_data['foto']; ?>">
                         </div>
                         <p><?php echo $invoice_data['waktu']; ?></p>
-                        <h1><span>Rp</span> <?php echo number_format($harga_semua_fs, 0, ".", "."); ?></h1>
+                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga'], 0, ".", "."); ?></h1>
                     </div>
                 </div>
             </div>

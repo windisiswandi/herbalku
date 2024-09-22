@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-$select_invoice = $server->query("SELECT * FROM `invoice` WHERE invoice.id_user=$iduser ORDER BY `invoice`.`idinvoice` DESC");
+$select_invoice = $server->query("SELECT * FROM invoice WHERE id_user=$iduser and tipe_progress='Belum Bayar' ORDER BY idinvoice DESC");
 $cek_invoice = mysqli_num_rows($select_invoice);
 if ($cek_invoice == "0") {
 ?>
@@ -15,7 +15,7 @@ if ($cek_invoice == "0") {
     <div class="box_isi_res_order">
         <?php
         while ($invoice_data = mysqli_fetch_assoc($select_invoice)) {
-            $invoice_item = $server->query("SELECT * From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+            $invoice_item = $server->query("SELECT *, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
             $item = mysqli_fetch_assoc($invoice_item);
             $exp_gambar_od = explode(',', $item['gambar']);
         ?>
@@ -25,7 +25,7 @@ if ($cek_invoice == "0") {
                     <div class="box_judul_ic">
                         <h1><?php echo $item['judul']; ?></h1>
                         <p>Kategori <span><?php echo $item['nama']; ?></span></p>
-                        <p>Total Produk <span><?php echo $item['qty']; ?></span></p>
+                        <p>Total Produk <span><?php echo $item['total_produk']; ?></span></p>
                     </div>
                 </div>
                 <div class="box_detail_isi_cart">

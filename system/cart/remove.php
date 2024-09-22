@@ -14,4 +14,9 @@ if ($page_product == 'produk view') {
         hapus_keranjang.style.display = 'none';
     </script>
 <?php
-}
+} ?>
+
+
+<script>
+    window.location.href = "";
+</script>

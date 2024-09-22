@@ -48,7 +48,7 @@ $page = 'KERANJANG';
                                 <div class="box_judul_ic">
                                     <h1><?php echo $cart_data['judul']; ?></h1>
                                     <p>Kategori <span><?php echo $cart_data['nama']; ?></span></p>
-                                    <p>Total Produk <span><?php echo $cart_data['jumlah']; ?></span></p>
+                                    <p>Jumlah <span><?php echo $cart_data['jumlah']; ?></span></p>
                                 </div>
                             </div>
                             <div class="box_detail_isi_cart">

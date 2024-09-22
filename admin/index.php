@@ -26,7 +26,7 @@ $sj_transaksi_adm = $server->query("SELECT * FROM `invoice` WHERE `transaction`=
 $jumlah_transaksi_adm = mysqli_num_rows($sj_transaksi_adm);
 
 // JUMLAH TRANSAKSI HARI INI
-$sj_transaksi_today_adm = $server->query("SELECT * FROM `akun`, `iklan`, `invoice` WHERE invoice.id_iklan=iklan.id AND invoice.id_user=akun.id AND `transaction`='settlement' AND `waktu_transaksi`LIKE'$time_today%' ORDER BY `invoice`.`idinvoice` DESC");
+$sj_transaksi_today_adm = $server->query("SELECT * FROM `iklan`, `invoice`, `invoice_item` WHERE invoice.idinvoice=invoice_item.idinvoice AND invoice_item.id_iklan=iklan.id and invoice.transaction='settlement' AND invoice.waktu_transaksi LIKE '$time_today%' ORDER BY `invoice`.`idinvoice` DESC");
 $jumlah_transaksi_today_adm = mysqli_num_rows($sj_transaksi_today_adm);
 
 // JUMLAH TRANSAKSI

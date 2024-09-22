@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-$select_invoice = $server->query("SELECT * FROM `invoice`, `iklan`, `kategori` WHERE invoice.id_user='$iduser' AND invoice.tipe_progress='Dikemas' AND invoice.id_iklan=iklan.id AND iklan.id_kategori=kategori.id ORDER BY `invoice`.`idinvoice` DESC");
+$select_invoice = $server->query("SELECT * FROM invoice WHERE id_user=$iduser and tipe_progress='Dikemas' ORDER BY idinvoice DESC");
 $cek_invoice = mysqli_num_rows($select_invoice);
 if ($cek_invoice == "0") {
 ?>
@@ -15,17 +15,17 @@ if ($cek_invoice == "0") {
     <div class="box_isi_res_order">
         <?php
         while ($invoice_data = mysqli_fetch_assoc($select_invoice)) {
-            $hitung_diskon_fs = ($invoice_data['diskon_i'] / 100) * $invoice_data['harga_i'];
-            $harga_diskon_fs = ($invoice_data['harga_i'] - $hitung_diskon_fs) * $invoice_data['jumlah'];
-            $exp_gambar_od = explode(',', $invoice_data['gambar']);
+            $invoice_item = $server->query("SELECT *, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+            $item = mysqli_fetch_assoc($invoice_item);
+            $exp_gambar_od = explode(',', $item['gambar']);
         ?>
-            <div class="isi_cart" id="isi_cart<?php echo $invoice_data['id']; ?>">
+            <div class="isi_cart" id="isi_cart<?php echo $item['id']; ?>">
                 <div class="box_gambar_judul">
                     <img src="<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>" alt="">
                     <div class="box_judul_ic">
-                        <h1><?php echo $invoice_data['judul']; ?></h1>
-                        <p>Kategori <span><?php echo $invoice_data['nama']; ?></span></p>
-                        <p>Total Produk <span><?php echo $invoice_data['jumlah']; ?></span></p>
+                        <h1><?php echo $item['judul']; ?></h1>
+                        <p>Kategori <span><?php echo $item['nama']; ?></span></p>
+                        <p>Total Produk <span><?php echo $item['total_produk']; ?></span></p>
                     </div>
                 </div>
                 <div class="box_detail_isi_cart">

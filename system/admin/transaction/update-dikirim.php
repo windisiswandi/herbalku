@@ -15,7 +15,7 @@ $update_dikirim = $server->query("UPDATE `invoice` SET `resi`='$resi_pengiriman_
 $insert_notif_ud = $server->query("INSERT INTO `notification`(`id_user`, `id_invoice`, `nama_notif`, `deskripsi_notif`, `waktu_notif`) VALUES ('$iduser_ud', '$idinvoicesb', 'Pesanan Dikirim', 'Pesanan sudah dikirim oleh penjual dan sedang dalam perjalanan', '$time')");
 
 // NOTIF EMAIL
-$select_user_mp = $server->query("SELECT * FROM `invoice`, `iklan`, `akun` WHERE invoice.idinvoice='$idinvoicesb' AND invoice.id_iklan=iklan.id AND invoice.id_user=akun.id ");
+$select_user_mp = $server->query("SELECT * FROM `invoice`, `invoice_item`, `iklan`, `akun` WHERE invoice.idinvoice='$idinvoicesb' AND invoice.idinvoice=invoice_item.idinvoice and invoice_item.id_iklan=iklan.id AND invoice.id_user=akun.id ");
 $data_select_user_mp = mysqli_fetch_assoc($select_user_mp);
 
 $email_user_mp = $data_select_user_mp['email'];

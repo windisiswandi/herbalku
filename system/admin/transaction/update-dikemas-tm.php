@@ -8,7 +8,7 @@ $id_usr_tm = $_POST['id_usr_tm'];
 $time = date("Y-m-d H:i:s");
 $tipe_progress = 'Dikemas';
 
-$select_user_mp = $server->query("SELECT * FROM `invoice`, `iklan`, `akun` WHERE invoice.idinvoice='$idinvoice_pss' AND invoice.id_iklan=iklan.id AND invoice.id_user=akun.id ");
+$select_user_mp = $server->query("SELECT * FROM `invoice`, `iklan`, `invoice_item`, `akun` WHERE invoice.idinvoice='$idinvoice_pss' AND invoice.idinvoice=invoice_item.idinvoice and invoice_item.id_iklan=iklan.id AND invoice.id_user=akun.id ");
 $data_select_user_mp = mysqli_fetch_assoc($select_user_mp);
 
 $email_user_mp = $data_select_user_mp['email'];

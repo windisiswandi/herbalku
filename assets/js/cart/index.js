@@ -43,9 +43,9 @@ function removecart(id_product) {
         }
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById('res').innerHTML = this.responseText;
-            document.getElementById(r_icon_cart).style.display = 'block';
-            document.getElementById(r_loading_cart).style.display = 'none';
-            document.getElementById(r_isi_cart).style.display = 'none';
+            // document.getElementById(r_icon_cart).style.display = 'block';
+            // document.getElementById(r_loading_cart).style.display = 'none';
+            // document.getElementById(r_isi_cart).style.display = 'none';
             var getscriptres = document.getElementsByTagName('script');
             for (var i = 0; i < getscriptres.length - 0; i++) {
                 if (getscriptres[i + 0].text != null) eval(getscriptres[i + 0].text);
