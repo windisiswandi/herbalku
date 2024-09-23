@@ -26,7 +26,7 @@ if ($cek_invoice == "0") {
             $exp_kota_od = explode(',', $invoice_data['kota']);
         ?>
             <div class="isi_cart" id="isi_cart_kajgf<?php echo $invoice_data['idinvoice']; ?>">
-                <div class="box_gambar_judul" onclick="show_detail_invoice('<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>', `<?php echo $item['judul']; ?>`, '<?php echo $item['nama']; ?>', '<?php echo $item['qty']; ?>', '#<?php echo $invoice_data['idinvoice']; ?>', '<?php echo $invoice_data['tipe_progress']; ?>', 'Sudah Dibayar', '<?php echo $invoice_data['nama_lengkap']; ?>', '<?php echo $exp_prov_od[1] . ', ' . $exp_kota_od[1] . ', ' . $invoice_data['alamat_lengkap']; ?>', '<?php echo strtoupper($invoice_data['kurir']) . ' ' . $invoice_data['layanan_kurir']; ?>', 'Rp <?php echo number_format($invoice_data['total_harga'], 0, '.', '.'); ?>', '<?php echo $url . 'admin/transaction/print/invoice/' . $invoice_data['idinvoice']; ?>')">
+                <div class="box_gambar_judul" onclick="show_detail_invoice('<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>', `<?php echo $item['judul']; ?>`, '<?php echo $item['nama']; ?>', '<?php echo $item['qty']; ?>', '#<?php echo $invoice_data['idinvoice']; ?>', '<?php echo $invoice_data['tipe_progress']; ?>', 'Sudah Dibayar', '<?php echo $invoice_data['nama_lengkap']; ?>', '<?php echo $exp_prov_od[1] . ', ' . $exp_kota_od[1] . ', ' . $invoice_data['alamat_lengkap']; ?>', '<?php echo strtoupper($invoice_data['kurir']) . ' ' . $invoice_data['layanan_kurir']; ?>', 'Rp <?php echo number_format($invoice_data['total_harga']+$invoice_data['kode_unik'], 0, '.', '.'); ?>', '<?php echo $url . 'admin/transaction/print/invoice/' . $invoice_data['idinvoice']; ?>')">
                     <img src="<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>" alt="">
                     <div class="box_judul_ic">
                         <h1><?php echo $item['judul']; ?></h1>
@@ -42,7 +42,7 @@ if ($cek_invoice == "0") {
                             <img src="<?php echo $url; ?>assets/image/profile/<?php echo $invoice_data['foto']; ?>">
                         </div>
                         <p><?php echo $invoice_data['waktu_dikirim']; ?></p>
-                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga'], 0, ".", "."); ?></h1>
+                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga']+$invoice_data['kode_unik'], 0, ".", "."); ?></h1>
                     </div>
                     <div class="bayar" onclick="step_paket_sampai('<?php echo $invoice_data['idinvoice']; ?>')">
                         <p id="text_sdk<?php echo $invoice_data['idinvoice']; ?>">Paket Sampai</p>

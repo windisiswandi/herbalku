@@ -41,7 +41,7 @@ if ($cek_invoice == "0") {
                             <img src="<?php echo $url; ?>assets/image/profile/<?php echo $invoice_data['foto']; ?>">
                         </div>
                         <p><?php echo $invoice_data['waktu']; ?></p>
-                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga'], 0, ".", "."); ?></h1>
+                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga']+$invoice_data['kode_unik'], 0, ".", "."); ?></h1>
                     </div>
                 </div>
             </div>

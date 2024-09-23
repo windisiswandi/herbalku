@@ -3,16 +3,16 @@ include '../../../config.php';
 
 $idinvoiceprint = $_GET['idinvoiceprint'];
 
-$select_invoice_print = $server->query("SELECT * FROM `iklan`, `akun`, `invoice` WHERE invoice.idinvoice='$idinvoiceprint' AND invoice.id_user=akun.id AND invoice.id_iklan=iklan.id ");
+$select_invoice_print = $server->query("SELECT * FROM `iklan`, `akun`, `invoice`, `invoice_item` WHERE invoice.idinvoice='$idinvoiceprint' AND invoice.idinvoice=invoice_item.idinvoice AND invoice.id_user=akun.id AND invoice_item.id_iklan=iklan.id");
 $data_invoice_print = mysqli_fetch_assoc($select_invoice_print);
 
 $provinsi_exp_p = explode(',', $data_invoice_print['provinsi']);
 $kota_exp_p = explode(',', $data_invoice_print['kota']);
 
-$hitung_diskon_fs = ($data_invoice_print['diskon_i'] / 100) * $data_invoice_print['harga_i'];
-$harga_diskon_fs = ($data_invoice_print['harga_i'] - $hitung_diskon_fs) * $data_invoice_print['jumlah'];
+$hitung_diskon_fs = ($data_invoice_print['diskon'] / 100) * $data_invoice_print['harga'];
+$harga_diskon_fs = ($data_invoice_print['harga'] - $hitung_diskon_fs) * $data_invoice_print['qty'];
 $harga_semua_fs = $harga_diskon_fs + $data_invoice_print['harga_ongkir'];
-$harga_satuan_fs = $harga_diskon_fs / $data_invoice_print['jumlah'];
+$harga_satuan_fs = $harga_diskon_fs / $data_invoice_print['qty'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,26 +103,32 @@ $harga_satuan_fs = $harga_diskon_fs / $data_invoice_print['jumlah'];
                                     <tr>
                                         <td><?php echo substr($data_invoice_print['judul'], 0, 30); ?>...</td>
                                         <td class="text-center">Rp <?php echo number_format($harga_satuan_fs, 0, ".", "."); ?></td>
-                                        <td class="text-center"><?php echo $data_invoice_print['jumlah']; ?></td>
+                                        <td class="text-center"><?php echo $data_invoice_print['qty']; ?></td>
                                         <td class="text-right">Rp <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="thick-line"></td>
                                         <td class="thick-line"></td>
-                                        <td class="thick-line text-center"><strong>Subtotal Produk</strong></td>
+                                        <td class="thick-line"><strong>Subtotal Produk</strong></td>
                                         <td class="thick-line text-right">Rp <?php echo number_format($harga_diskon_fs, 0, ".", "."); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="no-line"></td>
                                         <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>Ongkir</strong></td>
+                                        <td class="no-line"><strong>Kode Unik</strong></td>
+                                        <td class="no-line text-right">Rp <?php echo number_format($data_invoice_print['kode_unik'], 0, ".", "."); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"><strong>Ongkir</strong></td>
                                         <td class="no-line text-right">Rp <?php echo number_format($data_invoice_print['harga_ongkir'], 0, ".", "."); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="no-line"></td>
                                         <td class="no-line"></td>
-                                        <td class="no-line text-center"><strong>Total Pembayaran</strong></td>
-                                        <td class="no-line text-right">Rp <?php echo number_format($harga_semua_fs, 0, ".", "."); ?></td>
+                                        <td class="no-line"><strong>Total Pembayaran</strong></td>
+                                        <td class="no-line text-right">Rp <?php echo number_format($harga_semua_fs+$data_invoice_print['kode_unik'], 0, ".", "."); ?></td>
                                     </tr>
                                 </tbody>
                             </table>

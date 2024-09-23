@@ -31,7 +31,7 @@ if ($cek_invoice == "0") {
                 <div class="box_detail_isi_cart">
                     <div class="box_total_harga">
                         <p>Total Harga</p>
-                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga'], 0, ".", "."); ?></h1>
+                        <h1><span>Rp</span> <?php echo number_format($invoice_data['total_harga']+$invoice_data['kode_unik'], 0, ".", "."); ?></h1>
                     </div>
                     <a href="<?php echo $url; ?>checkout/detail/<?php echo $item['idinvoice']; ?>">
                         <div class="bayar" id="button_checkout<?php echo $item['id']; ?>">Bayar</div>

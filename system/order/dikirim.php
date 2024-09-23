@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-$select_invoice = $server->query("SELECT * FROM invoice WHERE id_user=$iduser and tipe_progress='Dikemas' ORDER BY idinvoice DESC");
+$select_invoice = $server->query("SELECT * FROM invoice WHERE id_user=$iduser and tipe_progress='Dikirim' ORDER BY idinvoice DESC");
 $cek_invoice = mysqli_num_rows($select_invoice);
 if ($cek_invoice == "0") {
 ?>
@@ -19,13 +19,13 @@ if ($cek_invoice == "0") {
             $item = mysqli_fetch_assoc($invoice_item);
             $exp_gambar_od = explode(',', $item['gambar']);
         ?>
-            <div class="isi_cart" id="isi_cart<?php echo $invoice_data['id']; ?>">
+            <div class="isi_cart" id="isi_cart<?php echo $invoice_data['idinvoice']; ?>">
                 <div class="box_gambar_judul">
                     <img src="<?php echo $url; ?>assets/image/product/<?php echo $exp_gambar_od[0]; ?>" alt="">
                     <div class="box_judul_ic">
                         <h1><?php echo $item['judul']; ?></h1>
                         <p>Kategori <span><?php echo $item['nama']; ?></span></p>
-                        <p>Total Produk <span><?php echo $item['jumlah']; ?></span></p>
+                        <p>Total Produk <span><?php echo $item['total_produk']; ?></span></p>
                     </div>
                 </div>
                 <div class="box_detail_isi_cart">
