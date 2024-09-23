@@ -15,7 +15,7 @@ if ($cek_invoice == "0") {
     <div class="box_isi_res_order">
         <?php
         while ($invoice_data = mysqli_fetch_assoc($select_invoice)) {
-             $invoice_item = $server->query("SELECT *, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+            $invoice_item = $server->query("SELECT invoice_item.*, iklan.*, kategori.*, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id GROUP BY invoice_item.id_item, iklan.id, kategori.id");
             $item = mysqli_fetch_assoc($invoice_item);
             $exp_gambar_od = explode(',', $item['gambar']);
         ?>

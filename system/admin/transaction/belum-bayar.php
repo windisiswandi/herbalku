@@ -22,7 +22,7 @@ if ($cek_invoice == "0") {
             // $hitung_diskon_fs = ($invoice_data['diskon_i'] / 100) * $invoice_data['harga_i'];
             // $harga_diskon_fs = ($invoice_data['harga_i'] - $hitung_diskon_fs) * $invoice_data['jumlah'];
             // $harga_semua_fs = $harga_diskon_fs + $invoice_data['harga_ongkir'];
-            $invoice_item = $server->query("SELECT *, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id");
+            $invoice_item = $server->query("SELECT invoice_item.*, iklan.*, kategori.*, sum(invoice_item.qty) as total_produk From `invoice_item`, `iklan`, `kategori` where invoice_item.idinvoice={$invoice_data['idinvoice']} and invoice_item.id_iklan=iklan.id and iklan.id_kategori=kategori.id GROUP BY invoice_item.id_item, iklan.id, kategori.id");
             $item = mysqli_fetch_assoc($invoice_item);
             $exp_gambar_od = explode(',', $item['gambar']);
             $exp_prov_od = explode(',', $invoice_data['provinsi']);
