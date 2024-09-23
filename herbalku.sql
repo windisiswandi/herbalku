@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Sep 2024 pada 11.11
+-- Waktu pembuatan: 23 Sep 2024 pada 10.56
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 8.0.13
 
@@ -44,10 +44,8 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`id`, `foto`, `nama_lengkap`, `email`, `no_whatsapp`, `password`, `waktu`, `tipe_daftar`, `tipe_akun`) VALUES
-(14, '1720684866.png', 'User Biasa', 'user@gmail.com', '085381259307', '$2y$10$uDy0.tHRpB0alUAAwL.1XOT/f3Y6O4SfIZ28rnhyyRlkEgacqimPu', '2021-06-18 16:20:48', '', ''),
 (15, '1720685153.png', 'Administrator', 'admin@gmail.com', '082377823390', '$2y$10$ivlVrsDRBVq7ZDlsBcLj7eJ2B8RlEY9cVNnNk.H0kkoQxP6b6PSBu', '2021-07-11 01:18:30', '', 'Admin'),
 (16, 'user.png', 'aldi', 'aldi@gmail.com', '087789442523', '$2y$10$kjv6T7uilTGSq95fhSdq8eUPJvHyb.cxWY5ZvTHI4etyZg9F6TjEu', '2024-09-02 14:47:57', '', ''),
-(17, 'user.png', 'maeka', 'maek@gmail.com', '123123123', '$2y$10$Ls2S2zpi0kKf1eUMv0/tN.txtvDVpjwZ6YboC7NZr/nm.IMuQMhxS', '2024-09-05 00:43:26', '', ''),
 (18, 'user.png', 'qori', 'qori@gmail.com', '123413432', '$2y$10$MGyms59lBFmCohAacYVBC.VKsz1.gCh1QMJn.rFNjxujlOf5thNiq', '2024-09-19 08:41:34', '', '');
 
 -- --------------------------------------------------------
@@ -164,7 +162,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`idinvoice`, `id_user`, `total_harga`, `kode_unik`, `kurir`, `id_kurir`, `layanan_kurir`, `etd`, `harga_ongkir`, `resi`, `provinsi`, `kota`, `alamat_lengkap`, `waktu`, `tipe_progress`, `transaction`, `type`, `order_id`, `fraud`, `bank_manual`, `bukti_transfer`, `waktu_transaksi`, `waktu_dikirim`, `waktu_selesai`, `waktu_dibatalkan`) VALUES
-(118, 18, 150500, 142, 'tiki', 0, 'REG', '3', 5000, NULL, '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Geres', '2024-09-20 04:11:51', 'Belum Bayar', NULL, NULL, NULL, NULL, 'BCA', '118-bukti-transfer.png', '2024-09-20 05:44:19', NULL, NULL, NULL),
+(118, 18, 150500, 142, 'tiki', 0, 'REG', '3', 5000, 'sdgsdfg', '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Geres', '2024-09-20 04:11:51', 'Selesai', NULL, NULL, NULL, NULL, 'BCA', '118-bukti-transfer.png', '2024-09-20 05:44:19', '2024-09-23 03:19:44', '2024-09-23 03:34:44', NULL),
 (119, 18, 534000, NULL, 'jne', 0, 'CTC', '2-3', 7000, NULL, '22,Nusa Tenggara Barat (NTB)', '240,Lombok Timur', 'Geres', '2024-09-20 05:03:12', 'Belum Bayar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -295,7 +293,7 @@ CREATE TABLE `notification` (
   `nama_notif` text NOT NULL,
   `deskripsi_notif` text NOT NULL,
   `waktu_notif` text NOT NULL,
-  `status_notif` text NOT NULL
+  `status_notif` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -415,7 +413,11 @@ INSERT INTO `notification` (`id_notif`, `id_user`, `id_invoice`, `nama_notif`, `
 (110, 14, 110, 'Pesanan Dikirim', 'Pesanan sudah dikirim oleh penjual dan sedang dalam perjalanan', '2024-07-11 19:36:47', 'Read'),
 (111, 14, 110, 'Pesanan Telah Sampai', 'Pesanan sudah sampai ke tempat tujuan', '2024-07-11 19:36:56', 'Read'),
 (112, 16, 111, 'Pembayaran Berhasil', 'Pembayaran pesanan sudah berhasil terverifikasi', '2024-09-02 15:24:08', 'Read'),
-(113, 16, 111, 'Pesanan Dikemas', 'Pesanan sedang dalam proses pengemasan oleh penjual', '2024-09-02 15:24:08', 'Read');
+(113, 16, 111, 'Pesanan Dikemas', 'Pesanan sedang dalam proses pengemasan oleh penjual', '2024-09-02 15:24:08', 'Read'),
+(114, 18, 118, 'Pembayaran Berhasil', 'Pembayaran pesanan sudah berhasil terverifikasi', '2024-09-23 03:14:57', 'Read'),
+(115, 18, 118, 'Pesanan Dikemas', 'Pesanan sedang dalam proses pengemasan oleh penjual', '2024-09-23 03:14:57', 'Read'),
+(116, 18, 118, 'Pesanan Dikirim', 'Pesanan sudah dikirim oleh penjual dan sedang dalam perjalanan', '2024-09-23 03:19:44', 'Read'),
+(117, 18, 118, 'Pesanan Telah Sampai', 'Pesanan sudah sampai ke tempat tujuan', '2024-09-23 03:34:44', 'Read');
 
 -- --------------------------------------------------------
 
@@ -689,7 +691,7 @@ ALTER TABLE `akun`
 -- AUTO_INCREMENT untuk tabel `banner_promo`
 --
 ALTER TABLE `banner_promo`
-  MODIFY `idbanner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `idbanner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `flashsale`
@@ -743,7 +745,7 @@ ALTER TABLE `nomor_rekening`
 -- AUTO_INCREMENT untuk tabel `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT untuk tabel `rating`
