@@ -69,7 +69,9 @@ $select_cart = $server->query("SELECT * FROM `keranjang`, `iklan` where keranjan
 
 // input ke invoice_item
 while ($cart_data = mysqli_fetch_assoc($select_cart)) {
+    $stock_produk_update = $cart_data['stok'] - $cart_data['jumlah'];
     $invoice_item = $server->query("INSERT INTO invoice_item (idinvoice, id_iklan, qty) VALUES ($invoice_id, {$cart_data['id_iklan']}, {$cart_data['jumlah']})");
+    $stock_item = $server->query("UPDATE iklan SET stok=$stock_produk_update where id={$cart_data['id_iklan']}");
 }
 
 $delete_cart_ck = $server->query("DELETE FROM `keranjang` WHERE `id_user`='$iduser'");
